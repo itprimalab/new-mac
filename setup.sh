@@ -13,8 +13,8 @@ sudo -v
 # Create Desktop directory if it doesn't exist
 mkdir -p ~/Desktop
 
-# Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Install Homebrew Silently
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Clone the repository into Desktop
 cd ~/Desktop
