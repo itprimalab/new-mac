@@ -38,14 +38,18 @@ brew update
 # Install Homebrew cask
 brew install cask
 
-# Install dockutil
-brew install dockutil
+# Install python
+brew install python
+
+# Install dockutil from the Github repository
+curl -LO https://github.com/kcrawford/dockutil/releases/download/3.0.2/dockutil-3.0.2.pkg
+sudo installer -pkg dockutil-3.0.2.pkg -target /
 
 # Install packages from Brewfile
 brew bundle
 
 # Delete all the apps from the dock
-/usr/local/bin/dockutil --remove all --no-restart
+dockutil --remove all
 killall Dock
 
 # Add apps to the dock
