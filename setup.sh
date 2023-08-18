@@ -52,10 +52,8 @@ brew bundle
 dockutil --remove all
 killall Dock
 
-# Add apps to the dock
-for app in $(brew --prefix)/Caskroom/*/*.app; do
-    /usr/local/bin/dockutil --add "$app" --no-restart
-done
+# Add all apps installed from Brewfile to the dock, reading the brewfile
+dockutil --add $(brew bundle dump --force --describe --file=- | awk '/^mas / {print $2}') --no-restart
 
 # Restart the dock to apply changes
 killall Dock
