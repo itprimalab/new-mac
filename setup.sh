@@ -52,14 +52,34 @@ brew bundle
 dockutil --remove all
 killall Dock
 
-# Add all apps installed from Brewfile to the dock, reading the brewfile
-dockutil --add $(brew bundle dump --force --describe --file=- | awk '/^mas / {print $2}') --no-restart
+# Read the application folder for apps that are not the default ones, and add them to the dock. Ignore OneDrive, 
+find /Applications -maxdepth 1 -type d -name "*.app" -exec basename {} \; | sort | while read app; do
+    if [[ ! -f "/System/Library/CoreServices/$app" ]]; then
+        dockutil --add "/Applications/$app" --no-restart
+    fi
+done
 
 # Restart the dock to apply changes
 killall Dock
 
-# Enable remote login
-sudo systemsetup -setremotelogin on
+# If it doesn't exist, create the Admin user
+if id "admin" &>/dev/null; then
+    echo "Admin user already exists"
+else
+    sudo dscl . -create /Users/admin
+    sudo dscl . -create /Users/admin UserShell /bin/bash
+    sudo dscl . -create /Users/admin RealName "Admin"
+    sudo dscl . -create /Users/admin UniqueID "1001"
+    sudo dscl . -create /Users/admin PrimaryGroupID 80
+    sudo dscl . -create /Users/admin NFSHomeDirectory /Users/admin
+    # Prompt for password
+    sudo dscl . -passwd /Users/admin
+    sudo dscl . -append /Groups/admin GroupMembership admin
+    sudo createhomedir -c -u admin > /dev/null
+fi
+
+# Enable remote management for Admin user
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -users admin -privs -all -restart -agent -menu
 
 # Enable screen sharing
 sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist
