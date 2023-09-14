@@ -1,14 +1,26 @@
 #!/bin/bash
 
-# Install Xcode Command Line Tools
-xcode-select --install
+# Install Xcode Command Line Tools (skip if already installed)
+if ! command -v xcode-select &> /dev/null; then
+    echo "Installing Xcode Command Line Tools"
+    xcode-select --install
+else
+    echo "Xcode Command Line Tools already installed"
+fi
 
-# Set Mac hostname
-echo "Insert Mac name:"
+# Set Mac hostname, press enter to skip
+echo "Enter the hostname for this Mac, or press enter to skip"
 read hostname
-sudo scutil --set HostName "$hostname"
-sudo scutil --set LocalHostName "$hostname"
-sudo scutil --set ComputerName "$hostname"
+
+if [ -z "$hostname" ]
+then
+    echo "Skipping hostname change"
+else
+    sudo scutil --set ComputerName "$hostname"
+    sudo scutil --set HostName "$hostname"
+    sudo scutil --set LocalHostName "$hostname"
+    sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$hostname"
+fi
 
 # Get sudo permissions
 sudo -v
@@ -24,6 +36,9 @@ NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ho
 
 # Add Homebrew to PATH
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/$(whoami)/.zprofile
+
+# Refresh the terminal so that Homebrew is added to PATH
+source ~/.zprofile
 
 # Clone the repository into Desktop
 cd ~/Desktop
@@ -47,6 +62,15 @@ sudo installer -pkg dockutil-3.0.2.pkg -target /
 
 # Install packages from Brewfile
 brew bundle
+
+# Download the latest version of the Microsoft Office installer, save it as Microsoft_Office_Installer.pkg and install it. If Office is already installed, do nothing.
+if [ -d "/Applications/Microsoft Word.app" ]
+then
+    echo "Microsoft Office already installed"
+else
+    curl -L -o Microsoft_Office_Installer.pkg https://go.microsoft.com/fwlink/p/?linkid=2009112
+    sudo installer -pkg Microsoft_Office_Installer.pkg -target /
+fi
 
 # Delete all the apps from the dock
 dockutil --remove all

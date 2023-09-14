@@ -18,6 +18,3 @@ cask 'chrome-remote-desktop-host'
 
 # Tunnelblick
 cask 'tunnelblick'
-
-# Microsoft Office 365
-cask 'microsoft-office'
