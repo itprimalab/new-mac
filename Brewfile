@@ -18,3 +18,6 @@ cask 'chrome-remote-desktop-host'
 
 # Tunnelblick
 cask 'tunnelblick'
+
+# AppCleaner
+cask 'appcleaner'

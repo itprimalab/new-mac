@@ -63,13 +63,13 @@ sudo installer -pkg dockutil-3.0.2.pkg -target /
 # Install packages from Brewfile
 brew bundle
 
-# Download the latest version of the Microsoft Office installer, save it as Microsoft_Office_Installer.pkg and install it. If Office is already installed, do nothing.
-if [ -d "/Applications/Microsoft Word.app" ]
+# Download the latest version of the Dymo Label installer, save it as Dymo_Label_Installer.pkg and install it. If Dymo Label is already installed, do nothing.
+if [ -d "/Applications/Dymo Label.app" ]
 then
-    echo "Microsoft Office already installed"
+    echo "Dymo Label already installed"
 else
-    curl -L -o Microsoft_Office_Installer.pkg https://go.microsoft.com/fwlink/p/?linkid=2009112
-    sudo installer -pkg Microsoft_Office_Installer.pkg -target /
+    curl -L -o Dymo_Label_Installer.pkg https://download.dymo.com/dymo/Software/Mac/DLS8Setup.8.7.5.dmg
+    sudo installer -pkg Dymo_Label_Installer.pkg -target /
 fi
 
 # Delete all the apps from the dock
