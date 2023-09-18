@@ -63,13 +63,15 @@ sudo installer -pkg dockutil-3.0.2.pkg -target /
 # Install packages from Brewfile
 brew bundle
 
-# Download the latest version of the Dymo Label installer, save it as Dymo_Label_Installer.pkg and install it. If Dymo Label is already installed, do nothing.
+# Download the Dymo Label Software 8.7.5. It is a dmg file, so we need to mount it and install the pkg inside.
 if [ -d "/Applications/Dymo Label.app" ]
 then
     echo "Dymo Label already installed"
 else
-    curl -L -o Dymo_Label_Installer.pkg https://download.dymo.com/dymo/Software/Mac/DLS8Setup.8.7.5.dmg
-    sudo installer -pkg Dymo_Label_Installer.pkg -target /
+    curl -LO https://download.dymo.com/dymo/Software/Mac/DLS8Setup.8.7.5.dmg
+    hdiutil attach DLS8Setup.8.7.5.dmg
+    sudo installer -pkg /Volumes/DYMO\ Label\ v.8.pkg/DYMO\ Label\ v.8.pkg -target /
+    hdiutil detach /Volumes/DYMO\ Label\ v.8.pkg
 fi
 
 # Delete all the apps from the dock
