@@ -109,3 +109,6 @@ sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resourc
 
 # Enable screen sharing
 sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist
+
+# Enable automatic updates
+sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist AutomaticCheckEnabled -bool true
