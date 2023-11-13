@@ -23,6 +23,7 @@ else
     sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$hostname"
 fi
 
+echo "Requesting sudo permission"
 # Get sudo permissions
 sudo -v
 
