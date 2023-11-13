@@ -10,6 +10,7 @@ fi
 
 # Set Mac hostname, press enter to skip
 echo "Enter the hostname for this Mac, or press enter to skip"
+
 read hostname
 
 if [ -z "$hostname" ]
@@ -99,6 +100,7 @@ else
     sudo dscl . -create /Users/admin PrimaryGroupID 80
     sudo dscl . -create /Users/admin NFSHomeDirectory /Users/admin
     # Prompt for password
+    echo "Insert admin password: "
     sudo dscl . -passwd /Users/admin
     sudo dscl . -append /Groups/admin GroupMembership admin
     sudo createhomedir -c -u admin > /dev/null
